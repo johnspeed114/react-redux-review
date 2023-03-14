@@ -1,4 +1,4 @@
-import SimpleInput from './components/SimpleInput';
+import BasicForm from './components/BasicForm';
 //Validate forms has one of the most complex logic. why?
 //You have two general groups of conditions you deal with
 //[I] 1)one or more inputs are invalid 2) all inputs are valid(sooo you need to check each inputs valid logic and they are different!)
@@ -10,7 +10,7 @@ import SimpleInput from './components/SimpleInput';
 function App() {
   return (
     <div className='app'>
-      <SimpleInput />
+      <BasicForm />
     </div>
   );
 }

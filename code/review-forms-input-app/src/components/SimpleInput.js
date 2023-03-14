@@ -1,5 +1,5 @@
-import { useState } from "react";
-import useInput from "../hooks/use-input";
+import { useState } from 'react';
+import useInput from '../hooks/use-input';
 
 //[IMPORTANT] it's always important validate your inputs on the server not on the client
 //Users can manipulate the validation logic code through the debugger's source code
@@ -10,23 +10,30 @@ const SimpleInput = (props) => {
     hasError: nameHasError,
     valueChangeHandler: nameChangeHandler,
     valueInputBlurHandler: nameBlurHandler,
-    reset: nameReset
+    reset: nameReset,
     // fyi this prop is passed as an arg to useInput we run this funct as an arg then wrap with the enteredValue
-  } = useInput(value => value.trim()!== '');
+  } = useInput((value) => value.trim() !== '');
   //we will use state first and set them to listen to input's onchanges
   //usestate starting as true can have issues with useeffect firing http effects if added as true
-
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
+  const {
+    value: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    valueInputBlurHandler: emailBlurHandler,
+    reset: emailReset,
+  } = useInput((value) => value.trim() !== '' && value.includes('@'));
+  // const [enteredEmail, setEnteredEmail] = useState("");
+  // const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
 
   // const [formIsValid, setFormIsValid] = useState(false)
   //[IMPORTANT] I can use this logic and apply it to all my if conditions on my Portfolio repo! Check that out!
   // const enteredNameIsValid = enteredName.trim() !== "";
   // const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-  const enteredEmailIsValid =
-    enteredEmail.includes("@") && enteredEmail.trim() !== "";
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  // const enteredEmailIsValid =
+  //   enteredEmail.includes("@") && enteredEmail.trim() !== "";
+  // const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
   //[fyi] instead of using useeffect we can use just variable formisalid
   let formIsValid = enteredNameIsValid && enteredEmailIsValid;
   //[FYI] the code gets rerendered after each change to the change input already; hence, why we don't need useffect to call again
@@ -46,23 +53,14 @@ const SimpleInput = (props) => {
   //   //[fyi] setEnteredname is one step behind... so just use event.target.value
   // };
 
-  const onChangeEmailHandler = (event) => {
-    setEnteredEmail(event.target.value);
-  };
-
   //function for onblur but onblur just means once the element is not selected
   // const nameInputBlurHandler = () => {
   //   setEnteredNameTouched(true);
   //   //so we can run the logic of validation after losing focus
   // };
 
-  const emailInputBlurHandler = () => {
-    setEnteredEmailTouched(true);
-  };
-
   const submitHandler = (event) => {
     event.preventDefault();
-
 
     //form submit when click button, http request is sent immediately
     //and forces a reload of the page/rerender for the app and event.preventdefault stops all that
@@ -75,49 +73,47 @@ const SimpleInput = (props) => {
     if (!enteredEmailIsValid) {
       return;
     }
-    // console.log(enteredValue)
-    console.log(enteredName);
+
     nameReset();
-    setEnteredEmail("");
-    setEnteredEmailTouched(false);
+    emailReset();
   };
 
   const nameInputClasses = nameHasError
-    ? "form-control invalid"
-    : "form-control";
+    ? 'form-control invalid'
+    : 'form-control';
 
-  const emailInputClasses = emailInputIsInvalid
-    ? "form-control invalid"
-    : "form-control";
+  const emailInputClasses = emailHasError
+    ? 'form-control invalid'
+    : 'form-control';
 
   return (
     <form onSubmit={submitHandler}>
       <div className={nameInputClasses}>
-        <label htmlFor="name">Your Name</label>
+        <label htmlFor='name'>Your Name</label>
         <input
-          type="text"
+          type='text'
           onChange={nameChangeHandler}
           value={enteredName}
-          id="name"
+          id='name'
           onBlur={nameBlurHandler}
         />
-        {nameHasError && <p className="error-text">Name is empty</p>}
+        {nameHasError && <p className='error-text'>Name is empty</p>}
       </div>
       <div className={emailInputClasses}>
-        <label htmlFor="email">Your Email</label>
+        <label htmlFor='email'>Your Email</label>
         <input
-          type="email"
-          onChange={onChangeEmailHandler}
+          type='email'
+          onChange={emailChangeHandler}
           value={enteredEmail}
-          id="email"
-          onBlur={emailInputBlurHandler}
+          id='email'
+          onBlur={emailBlurHandler}
         />
 
-        {emailInputIsInvalid && (
-          <p className="error-text">Email is is empty or missing '@'</p>
+        {emailHasError && (
+          <p className='error-text'>Email is is empty or missing '@'</p>
         )}
       </div>
-      <div className="form-actions">
+      <div className='form-actions'>
         <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>

@@ -1,10 +1,29 @@
+import useInput from '../hooks/use-input';
+
 const BasicForm = (props) => {
+  const {
+    value: firstName,
+    hasError: hasFirstNameError,
+    isValid: isFirstNameValid,
+    valueChangeHandler: firstNameChangeHandler,
+    valueInputBlurHandler: firstInputBlurHandler,
+    reset: firstNameReset,
+  } = useInput((value) => value.trim() !== '');
+
+  const nameChangeHandler = (event) => {
+    firstNameChangeHandler(event.target.value);
+    console.log(firstName);
+  };
+  const submitHandler = (event) => {
+    event.preventDefault();
+    firstNameReset(); // maybe we can just have one
+  };
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className='control-group'>
         <div className='form-control'>
           <label htmlFor='name'>First Name</label>
-          <input type='text' id='name' />
+          <input type='text' id='name' onChange={nameChangeHandler} />
         </div>
         <div className='form-control'>
           <label htmlFor='name'>Last Name</label>
