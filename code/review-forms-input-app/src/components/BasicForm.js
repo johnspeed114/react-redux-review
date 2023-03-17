@@ -43,6 +43,7 @@ const BasicForm = (props) => {
   return (
     <form onSubmit={submitHandler}>
       <div className="control-group">
+        <Input content='firstName'  />
         <div className={firstNameClassValid}>
           <label htmlFor="name">First Name</label>
           <input
