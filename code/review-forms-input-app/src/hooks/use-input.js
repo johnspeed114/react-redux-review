@@ -21,10 +21,12 @@ function valueReducer(state, action) {
     }
     case 'on_blur': {
       return {
-        enteredValue: state.enteredValue,
         isTouched: true,
+        enteredValue: state.enteredValue,
       };
     }
+    default:
+      return intialState;
   }
 }
 
@@ -32,12 +34,11 @@ const useInput = (validateValue) => {
   const [state, dispatch] = useReducer(valueReducer, intialState);
 
   //[fyi] inputs for hooks should be generic (we can pass a valid function as an arg)
-  console.log(state.enteredValue);
   const valueIsValid = validateValue(state.enteredValue);
   const hasError = !valueIsValid && state.isTouched;
+  const classIsValid = hasError ? 'form-control invalid' : 'form-control';
 
   const valueChangeHandler = (event) => {
-    console.log(event.target.value);
     dispatch({ type: 'change_value', newEnteredValue: event.target.value });
   };
 
@@ -49,8 +50,6 @@ const useInput = (validateValue) => {
 
   const reset = () => {
     // console.log(state.enteredValue, 'vv');
-    console.log(state.enteredValue);
-    //it's cuz of my type action lol
     dispatch({ type: 'reset' });
   };
 
@@ -58,6 +57,7 @@ const useInput = (validateValue) => {
     value: state.enteredValue,
     hasError,
     isValid: valueIsValid,
+    classIsValid,
     valueChangeHandler,
     valueInputBlurHandler,
     reset,
