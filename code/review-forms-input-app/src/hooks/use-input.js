@@ -36,8 +36,9 @@ const useInput = (validateValue) => {
   const valueIsValid = validateValue(state.enteredValue);
   const hasError = !valueIsValid && state.isTouched;
 
-  const valueChangeHandler = (value) => {
-    dispatch({ type: 'change_value', newEnteredValue: value });
+  const valueChangeHandler = (event) => {
+    console.log(event.target.value);
+    dispatch({ type: 'change_value', newEnteredValue: event.target.value });
   };
 
   const valueInputBlurHandler = () => {
@@ -48,7 +49,9 @@ const useInput = (validateValue) => {
 
   const reset = () => {
     // console.log(state.enteredValue, 'vv');
-    dispatch({ type: 'rest' });
+    console.log(state.enteredValue);
+    //it's cuz of my type action lol
+    dispatch({ type: 'reset' });
   };
 
   return {

@@ -10,10 +10,6 @@ const BasicForm = (props) => {
     reset: firstNameReset,
   } = useInput((value) => value.trim() !== '');
 
-  const nameChangeHandler = (event) => {
-    firstNameChangeHandler(event.target.value);
-    console.log(firstName);
-  };
   const submitHandler = (event) => {
     event.preventDefault();
     firstNameReset(); // maybe we can just have one
@@ -23,7 +19,7 @@ const BasicForm = (props) => {
       <div className='control-group'>
         <div className='form-control'>
           <label htmlFor='name'>First Name</label>
-          <input type='text' id='name' onChange={nameChangeHandler} />
+          <input type='text' id='name' onChange={firstNameChangeHandler} />
         </div>
         <div className='form-control'>
           <label htmlFor='name'>Last Name</label>
